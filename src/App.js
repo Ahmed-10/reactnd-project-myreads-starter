@@ -24,7 +24,7 @@ function BooksApp (){
         <div className="app">
           <Routes>
             <Route path="/" element={<ListBooks books={books} handleUpdate={handleBooksUpdate}/>} />
-            <Route path="/search" element={<SearchBooks />} />
+            <Route path="/search" element={<SearchBooks books={books}/>} />
           </Routes>
         </div>
       </BrowserRouter>

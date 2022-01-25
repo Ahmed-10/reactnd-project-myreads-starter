@@ -4,7 +4,7 @@ import { search } from '../services/BooksAPI';
 import { Book, EmptyResult } from '../components'
 import '../App.css';
 
-const SearchBooks = () => {
+const SearchBooks = (props) => {
     const [query, setQuery] = React.useState('');
     const [books, setBooks] = React.useState([]);
     const [error, setError] = React.useState({
@@ -51,7 +51,8 @@ const SearchBooks = () => {
             <div className="search-books-results">
                 <ol className="books-grid">
                     {books.map(book => {
-                        return <Book key={book.id} {...book} updateShelf={(id, shelf) => console.log(id, shelf)}/>
+                        const shelf = props.books.find(b => b.id === book.id)? props.books.find(b => b.id === book.id).shelf : 'none';
+                        return <Book key={book.id} {...book} shelf={shelf} updateShelf={(id, shelf) => console.log(id, shelf)}/>
                     })}
                 </ol>
                 {error.error && <EmptyResult />}
