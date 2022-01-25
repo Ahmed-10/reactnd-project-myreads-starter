@@ -73,7 +73,7 @@ Method Signature:
 update(bookId, shelf)
 ```
 
-* book: `<Object>` containing at minimum an `id` attribute
+* bookId: `<String>` containing the `id` attribute of a book
 * shelf: `<String>` contains one of ["wantToRead", "currentlyReading", "read"]  
 * Returns a Promise which resolves to a JSON object containing the response data of the POST request
 
