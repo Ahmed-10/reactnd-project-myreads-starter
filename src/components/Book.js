@@ -1,5 +1,5 @@
 import React from 'react';
-import { update } from '../BooksAPI';
+import { update } from '../services/BooksAPI';
 import { bookshelfs } from '../utils/bookshelfs';
 import '../App.css';
 
