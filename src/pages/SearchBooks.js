@@ -1,17 +1,35 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import { search } from '../services/BooksAPI';
-import { Book } from '../components'
+import { Book, EmptyResult } from '../components'
 import '../App.css';
 
 const SearchBooks = () => {
     const [query, setQuery] = React.useState('');
     const [books, setBooks] = React.useState([]);
+    const [error, setError] = React.useState({
+        error: false,
+        message: ''
+    });
     
-    const handleSearch = (event) => {
-        setQuery(event.target.value)
-        search(event.target.value).then(books => setBooks(books))
-    }
+    const handleSearch = (event) => setQuery(event.target.value)
+
+    React.useEffect(() => {
+        if(query === '') {
+            setBooks([]);
+            setError({error: false, message: ''});
+        } else {
+            search(query).then(books => {
+                if(books.error) {
+                    setError({error: true, message: books.error});
+                    setBooks([]);
+                } else {
+                    setError({error: false, message: ''});
+                    setBooks(books);
+                }
+            })
+        }
+    }, [query])
     
     return (
         <div className="search-books">
@@ -32,10 +50,11 @@ const SearchBooks = () => {
             </div>
             <div className="search-books-results">
                 <ol className="books-grid">
-                    {books.map(book => (
-                        <Book key={book.id} {...book} updateShelf={(id, shelf) => console.log(id, shelf)}/>
-                    ))}
+                    {books.map(book => {
+                        return <Book key={book.id} {...book} updateShelf={(id, shelf) => console.log(id, shelf)}/>
+                    })}
                 </ol>
+                {error.error && <EmptyResult />}
             </div>
         </div>
     );
