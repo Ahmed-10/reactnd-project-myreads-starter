@@ -1,25 +1,36 @@
 import React from 'react';
+import { update } from '../BooksAPI';
+import { bookshelfs } from '../utils/bookshelfs';
+import '../App.css';
 
-const Book = ({imageLinks, title, authors}) => {
+const Book = ({id, imageLinks, title, authors, updateShelf}) => {
+
+    const handleUpdate = (event) => {
+        const shelf = event.target.value;
+        update(id, shelf).then(() => updateShelf(id, shelf));
+    }
+    
     return (
-        <div className="book">
-            <div className="book-top">
-                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${imageLinks.thumbnail})` }}></div>
-                <div className="book-shelf-changer">
-                    <select>
-                        <option value="move" disabled>Move to...</option>
-                        <option value="currentlyReading">Currently Reading</option>
-                        <option value="wantToRead">Want to Read</option>
-                        <option value="read">Read</option>
-                        <option value="none">None</option>
-                    </select>
+        <li>
+            <div className="book">
+                <div className="book-top">
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${imageLinks.thumbnail})` }}></div>
+                    <div className="book-shelf-changer">
+                        <select onClick={handleUpdate}>
+                            <option value="move" disabled>Move to...</option>
+                            {bookshelfs.map(bookshelf => (
+                                <option key={bookshelf.shelf} value={bookshelf.shelf}>{bookshelf.title}</option>
+                            ))}
+                            <option value="none">None</option>
+                        </select>
+                    </div>
                 </div>
+                <div className="book-title">{title}</div>
+                {authors.map((author) => (
+                    <div className="book-authors" key={author}>{author}</div>
+                ))}
             </div>
-            <div className="book-title">{title}</div>
-            {authors.map((author) => (
-                <div className="book-authors" key={author}>{author}</div>
-            ))}
-        </div>
+        </li>
     );
 }
 
