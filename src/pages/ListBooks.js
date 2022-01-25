@@ -31,7 +31,7 @@ const ListBooks = (props) => {
                 {bookshelfs.map(bookshelf => (
                     <Bookshelf title={bookshelf.title} key={bookshelf.shelf}>
                         {props.books.filter(book => book.shelf === bookshelf.shelf).map(book => (
-                            <Book key={book.title} {...book} updateShelf={updateShelf}/>
+                            <Book key={book.id} {...book} updateShelf={updateShelf}/>
                         ))}
                     </Bookshelf>
                 ))}
