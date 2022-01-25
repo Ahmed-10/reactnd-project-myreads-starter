@@ -12,6 +12,30 @@ const SearchBooks = (props) => {
         message: ''
     });
     
+    const updateShelf = (bookId, shelf, index) => {
+        let bookList = props.books
+        const _index = bookList.findIndex(book => book.id === bookId)
+        if(_index !== -1) {
+            if(bookList[_index].shelf === shelf) { 
+                return 
+            } else {
+                props.handleUpdate([])
+                // remove the book and push it back to the top of the list
+                const book = bookList.splice(_index, 1)[0]
+                book.shelf = shelf
+                bookList.push(book)
+                props.handleUpdate(bookList)
+            }
+        } else {
+            if(shelf === 'none') {
+                return
+            } else {
+                bookList.push({...books[index], shelf})
+                props.handleUpdate(bookList)
+            }
+        }
+    }
+
     const handleSearch = (event) => setQuery(event.target.value)
 
     React.useEffect(() => {
@@ -50,9 +74,9 @@ const SearchBooks = (props) => {
             </div>
             <div className="search-books-results">
                 <ol className="books-grid">
-                    {books.map(book => {
+                    {books.map((book, index) => {
                         const shelf = props.books.find(b => b.id === book.id)? props.books.find(b => b.id === book.id).shelf : 'none';
-                        return <Book key={book.id} {...book} shelf={shelf} updateShelf={(id, shelf) => console.log(id, shelf)}/>
+                        return <Book key={book.id} {...book} shelf={shelf} updateShelf={(id, shelf) => updateShelf(id, shelf, index)}/>
                     })}
                 </ol>
                 {error.error && <EmptyResult />}
