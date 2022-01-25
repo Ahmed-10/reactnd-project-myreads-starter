@@ -1,38 +1,26 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { Bookshelf, Book } from '../components';
-import { getAll } from '../BooksAPI'
 import { bookshelfs } from '../utils/bookshelfs';
 import '../App.css';
 
-const ListBooks = () => {
+const ListBooks = (props) => {
     const navigate = useNavigate();
-    const [books, setBooks] = React.useState([]);
-    const [firstLoad, setFirstLoad] = React.useState(true);
 
     const updateShelf = (bookId, shelf) => {
-        let bookList = books
+        let bookList = props.books
         const index = bookList.findIndex(book => book.id === bookId)
         if(bookList[index].shelf === shelf) { 
             return 
         } else {
-            setBooks([])
+            props.handleUpdate([])
             // remove the book and push it back to the top of the list
             const book = bookList.splice(index, 1)[0]
             book.shelf = shelf
             bookList.push(book)
-            setBooks(bookList)
+            props.handleUpdate(bookList)
         }
     }
-
-    React.useEffect(() => {
-        if(firstLoad) {
-            getAll().then(books => {
-                setBooks(books)
-                setFirstLoad(false)
-            })
-        }
-    });
 
     return (
         <div className="list-books">
@@ -42,7 +30,7 @@ const ListBooks = () => {
             <div className="list-books-content">
                 {bookshelfs.map(bookshelf => (
                     <Bookshelf title={bookshelf.title} key={bookshelf.shelf}>
-                        {books.filter(book => book.shelf === bookshelf.shelf).map(book => (
+                        {props.books.filter(book => book.shelf === bookshelf.shelf).map(book => (
                             <Book key={book.title} {...book} updateShelf={updateShelf}/>
                         ))}
                     </Bookshelf>
