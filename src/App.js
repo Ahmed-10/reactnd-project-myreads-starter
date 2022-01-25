@@ -7,8 +7,7 @@ import {
 import './App.css'
 import { ListBooks, SearchBooks } from './pages';
 
-class BooksApp extends React.Component {
-  render() {
+function BooksApp (){
     return (
       <BrowserRouter>
         <div className="app">
@@ -19,7 +18,6 @@ class BooksApp extends React.Component {
         </div>
       </BrowserRouter>
     )
-  }
 }
 
 export default BooksApp
