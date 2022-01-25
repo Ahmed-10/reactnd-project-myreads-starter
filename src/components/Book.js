@@ -14,7 +14,7 @@ const Book = ({id, imageLinks, title, authors, shelf, updateShelf}) => {
         <li>
             <div className="book">
                 <div className="book-top">
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${imageLinks.thumbnail})` }}></div>
+                    { imageLinks && <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${imageLinks.thumbnail})` }}></div>}
                     <div className="book-shelf-changer">
                         <select onClick={handleUpdate} defaultValue={shelf? shelf : 'none'}>
                             <option value="move" disabled>Move to...</option>
